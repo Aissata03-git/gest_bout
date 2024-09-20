@@ -89,13 +89,47 @@ class DetteController extends GetxController {
   }
   }
 
+  void addDette(Dette dette) async {
+    await DetteService.addDette(dette);
+    fetchDettes(); // Rafraîchir la liste des dettes après l'ajout
+  }
+
+  void updateDette(int id, Dette dette) async {
+    await DetteService.updateDette(id, dette);
+    fetchDettes(); // Rafraîchir la liste après la mise à jour
+  }
+
+  void deleteDette(int id) async {
+    await DetteService.deleteDette(id);
+    fetchDettes(); // Rafraîchir la liste après suppression
+  }
+
+  void fetchArchivedDettes() async {
+    try {
+      isLoading(true);
+      archivedDettes.value = await DetteService.getArchivedDettes();
+    } finally {
+      isLoading(false);
+    }
+  }
+
   
 
-  void deleteDette(param0) {}
+  void DetteService(param0) {}
 
   getDetteById(int detteId) {}
 
   void modifierDette(int detteId) {}
 
   void searchDetteById(String text) {}
+}
+
+extension on void Function(dynamic param0) {
+  getArchivedDettes() {}
+  
+  deleteDette(int id) {}
+  
+  updateDette(int id, Dette dette) {}
+  
+  addDette(Dette dette) {}
 }

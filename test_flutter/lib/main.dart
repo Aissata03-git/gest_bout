@@ -19,7 +19,6 @@ import 'package:test_flutter/views/histoarch.views.dart';
 import 'package:test_flutter/views/home.views.dart';
 import 'package:test_flutter/views/modiC.views.dart';
 import 'package:test_flutter/views/modiD.views.dart';
-import 'package:test_flutter/views/notif.views.art';
 import 'package:test_flutter/views/notif.views.dart';
 import 'package:test_flutter/views/param.views.dart';
 import 'package:test_flutter/views/restau.views.dart';
@@ -31,98 +30,92 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-@override
+  @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Application de gestion')),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () => Get.toNamed('/home'),
-                child: Text('Accueil'),
-              ),
-              ElevatedButton(
-                onPressed: () => Get.toNamed('/clients'),
-                child: Text('Clients'),
-              ),
-              ElevatedButton(
-                onPressed: () => Get.toNamed('/dettes'),
-                child: Text('Dettes'),
-              ),
-              ElevatedButton(
-                onPressed: () => Get.toNamed('/archives'),
-                child: Text('Archives'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(AjouterClientScreen());
-                },
-                child: Text('Ajouter un client'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(ListeClientsScreen());
-                },
-                child: Text('Liste des clients'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(AjouterDetteScreen());
-                },
-                child: Text('Ajouter une dette'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(ListeDettesScreen());
-                },
-                child: Text('Liste des dettes'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(ListeArchivesScreen());
-                },
-                child: Text('Voir les archives'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(SoldeDetteScreen(detteId: 1)); 
-                },
-                child: Text('Solder une dette'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(ParametresScreen());
-                },
-                child: Text('Paramètres'),
-              ),
-            ],
-          ),
-        ),
-      ),
-      title: 'Gestion',
+      title: 'Application de gestion',
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => HomeView()),
         GetPage(name: '/clients', page: () => ClientsView()),
-        GetPage(name: '/archives', page: () => ArchivesView()),
         GetPage(name: '/dettes', page: () => DettesView()),
+        GetPage(name: '/archives', page: () => ArchivesView()),
         GetPage(name: '/settings', page: () => SettingsView()),
+
+        // Sous-pages pour Clients
+        GetPage(name: '/client_add', page: () => AjouterClientView()),
+        GetPage(name: '/client_edit/:id', page: () => ModifierClientView(clientId: 1)),
         GetPage(name: '/clients/:id/view', page: () => ClientDetailsView(clientId: int.parse(Get.parameters['id']!))),
 
-        GetPage(name: '/client_add', page: () => AjouterClientView()),
+        // Sous-pages pour Dettes
         GetPage(name: '/dette_add', page: () => AjouterDetteView()),
-        GetPage(name: '/client_edit/:id', page: () => ModifierClientView(clientId:1,)), // Modification de client
-        GetPage(name: '/dette_edit/:id', page: () => ModifierDetteView(detteId: 1,)), // Modification de dette
+        GetPage(name: '/dette_edit/:id', page: () => ModifierDetteView(detteId: 1)),
+        GetPage(name: '/dettes_archived', page: () => DetteArchivesView()),
 
+        // Sous-pages pour Archives
         GetPage(name: '/archives_archived', page: () => DetteArchivesView()),
         GetPage(name: '/archives_history', page: () => ArchivesHistoryView()),
         GetPage(name: '/archives_restore', page: () => ArchivesRestoreView()),
+
+        // Notifications et paramètres
         GetPage(name: '/notifications', page: () => NotificationsView()),
         GetPage(name: '/photoprofil', page: () => ProfilePage()),
-   ]
+      ],
+    );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Accueil'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () => Get.toNamed('/notifications'),
+          ),
+          GestureDetector(
+            onTap: () => Get.toNamed('/photoprofil'),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage('url_to_image'), 
+            ),
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text('Bienvenue à l\'Accueil'),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Clients'),
+          BottomNavigationBarItem(icon: Icon(Icons.monetization_on), label: 'Dettes'),
+          BottomNavigationBarItem(icon: Icon(Icons.archive), label: 'Archives'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Paramètres'),
+        ],
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Get.toNamed('/');
+              break;
+            case 1:
+              Get.toNamed('/clients');
+              break;
+            case 2:
+              Get.toNamed('/dettes');
+              break;
+            case 3:
+              Get.toNamed('/archives');
+              break;
+            case 4:
+              Get.toNamed('/settings');
+              break;
+          }
+        },
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 const environnement={
   "dev":{
-      "url":"http://localhost:8894/api/v1"
+      "url":"http://127.0.0.1:8000/api/"
   },
 
   "prod":{

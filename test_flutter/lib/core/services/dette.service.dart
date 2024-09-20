@@ -11,5 +11,9 @@ class DetteService {
       Dette(id: 3, montant: 1500, date: '2024-07-20', clientId: 103, solde: true),
     ];
   }
+
+  static updateDette(int id, Dette dette) {}
+
+  static deleteDette(int id) {}
 }
 

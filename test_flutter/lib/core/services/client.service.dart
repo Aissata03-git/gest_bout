@@ -4,7 +4,7 @@ import 'package:test_flutter/core/models/client.models.dart';
 import 'package:test_flutter/core/services/api.url.dart';
 
 class ClientService {
-  final String apiUrl = "http://localhost:8894/api/v1";
+  final String apiUrl = "http://127.0.0.1:8000/api/";
   
   get baseUrl => null; 
 
